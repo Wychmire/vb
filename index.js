@@ -9,7 +9,7 @@ const {
 	userIDs,
 	logChannel,
 	commandList,
-} = require('../config.json');
+} = require('./config.json');
 
 const utils = {
 	clean(text) {

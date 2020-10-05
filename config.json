@@ -1,0 +1,68 @@
+{
+	"prefix": "!v",
+	"token": "NzYwMzAwOTQxOTYxODU0OTc2.X3KDbg.A9oovceUg-yVY9x-dSJmZxmaekE",
+
+	"bannedWordList": {
+		"foobar": {
+			"censored": "fo//ar",
+			"reason": "Testing"
+		}
+	},
+
+	"guildID": "718913901173145642",
+
+	"userIDs": {
+		"ownerID": "276043715347349504",
+		"botID": "760300941961854976"
+	},
+
+	"logChannel": {
+		"user": "762396452051222558",
+		"action": "762396475078213664",
+		"message": "762396494417625129"
+	},
+
+	"commandList": {
+		"warn": {
+			"usage": "<USER_TAG | USER_ID>",
+			"hasArgs": true,
+			"restricted": true,
+			"requiredPerm": "VIEW_AUDIT_LOG"
+		},
+
+		"kick": {
+			"usage": "<USER_TAG | USER_ID>",
+			"hasArgs": true,
+			"restricted": true,
+			"requiredPerm": "KICK_MEMBERS"
+		},
+
+		"ban": {
+			"usage": "<USER_TAG | USER_ID>",
+			"hasArgs": true,
+			"restricted": true,
+			"requiredPerm": "BAN_MEMBERS"
+		},
+
+		"unban": {
+			"usage": "<USER_TAG | USER_ID>",
+			"hasArgs": true,
+			"restricted": true,
+			"requiredPerm": "BAN_MEMBERS"
+		},
+
+		"bannedwords": {
+			"usage": "",
+			"hasArgs": false,
+			"restricted": false,
+			"requiredPerm": ""
+		},
+
+		"eval": {
+			"usage": "",
+			"hasArgs": true,
+			"restricted": true,
+			"requiredPerm": ""
+		}
+	}
+}
