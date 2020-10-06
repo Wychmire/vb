@@ -48,6 +48,8 @@ const bot = {
 				messages: utils.findChannel(discordMessage, logChannel.message),
 			};
 
+			console.log(discordMessage);
+
 			// Check the message for banned words
 			// If the message contains a banned word and it wasn't sent by a
 			// bot, remove the message and ping the user
@@ -56,7 +58,11 @@ const bot = {
 					.toLowerCase()
 					.includes(word);
 
-				if (usedBannedWord && !discordMessage.author.bot) {
+				if (
+					!discordMessage.author.bot &&
+					usedBannedWord &&
+					bannedWordList[word].isHungry
+				) {
 					discordMessage.delete();
 					discordMessage.reply(`you used a banned word!`);
 
@@ -73,12 +79,40 @@ const bot = {
 						'#fdbc4b'
 					);
 
-					channels.action.send({
+					logChannels.actions.send({
 						embed: modEmbed,
 					});
-					console.log(`Banned words used: ${word}`);
-
 					return;
+				} else if (
+					!discordMessage.author.bot &&
+					usedBannedWord &&
+					!bannedWordList[word].isHungry
+				) {
+					const content = discordMessage.content.split(' ');
+
+					if (content.includes(word)) {
+						discordMessage.delete();
+						discordMessage.reply(`you used a banned word!`);
+
+						const modEmbed = utils.modEmbed(
+							'Warn',
+							{
+								name: `Automatic action`,
+								avatar:
+									'https://cdn.discordapp.com/avatars/760300941961854976/3d1940dd0973e903fbfaa82587b3a646.png?size=128',
+							},
+							'Automatic',
+							discordMessage.author,
+							`Used a banned word (${bannedWordList[word].censored})`,
+							'#fdbc4b'
+						);
+
+						logChannels.actions.send({
+							embed: modEmbed,
+						});
+
+						return;
+					}
 				}
 			}
 
@@ -158,7 +192,9 @@ hasAttachments = ${hasAttachments}`;
 				cmds[commandName](discordMessage, args, Client);
 			} catch (error) {
 				console.error(error);
-				discordMessage.reply('there was an error trying to execute that command.');
+				discordMessage.reply(
+					'there was an error trying to execute that command.'
+				);
 			}
 		});
 

@@ -3,9 +3,15 @@
 	"token": "xxxxxxxxxxxxxxxxxxxxxxxx.xxxxxx.xxxxxxxxx-xxxxx-xxxxxxxxxxx",
 
 	"bannedWordList": {
-		"foobar": {
-			"censored": "fo//ar",
-			"reason": "Testing"
+		"foo": {
+			"censored": "f//",
+			"reason": "Reason for banning word",
+			"isHungry": false
+		},
+		"bar": {
+			"censored": "b//",
+			"reason": "Reason for banning word",
+			"isHungry": false
 		}
 	},
 
@@ -13,7 +19,7 @@
 
 	"userIDs": {
 		"ownerID": "123456789123456789",
-		"botID":   "123456789123456789"
+		"botID": "123456789123456789"
 	},
 
 	"logChannel": {
