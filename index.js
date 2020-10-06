@@ -158,7 +158,7 @@ hasAttachments = ${hasAttachments}`;
 				cmds[commandName](discordMessage, args, Client);
 			} catch (error) {
 				console.error(error);
-				message.reply('there was an error trying to execute that command.');
+				discordMessage.reply('there was an error trying to execute that command.');
 			}
 		});
 
@@ -233,8 +233,6 @@ hasAttachments = ${hasAttachments}`;
 
 		// Print a ready message
 		console.info(`Ready`);
-
-		console.log(utils);
 
 		// Listen for Discord messages
 		this.listen();
