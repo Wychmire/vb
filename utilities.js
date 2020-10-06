@@ -184,8 +184,6 @@ url = "https://discord.com/channels/${discordMessage.guild.id}/${discordMessage.
 		if (isBanned) isBanned = true;
 		else isBanned = false;
 
-		console.log('from checkIfBanned():', isBanned, userID);
-
 		return isBanned;
 	},
 
