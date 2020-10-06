@@ -1,7 +1,15 @@
 const utils = require('./utilities');
 
+const { bannedWordList, userIDs } = require('./config.json');
+
 module.exports = {
-	warn(discordMessage, args) {
+	/**
+	 * Warn a user
+	 * @param {Object} discordMessage - Discord message object
+	 * @param {Array} args - Command arguments
+	 * @param {Object} client - Discord client
+	 */
+	warn(discordMessage, args, client) {
 		const target = utils.trimUserID(args[0]);
 
 		if (!discordMessage.guild.member(target))
@@ -16,10 +24,15 @@ module.exports = {
 			color: '#fdbc4b',
 		};
 
-		utils.modAction(discordMessage, msgObj);
+		utils.modAction(discordMessage, msgObj, client);
 	},
 
-	// Kick a user
+	/**
+	 * Kick a user
+	 * @param {Object} discordMessage - Discord message object
+	 * @param {Array} args - Command arguments
+	 * @param {Object} client - Discord client
+	 */
 	kick(discordMessage, args) {
 		const target = utils.trimUserID(args[0]);
 
@@ -38,8 +51,13 @@ module.exports = {
 		utils.modAction(discordMessage, msgObj);
 	},
 
-	// Ban a user
-	ban(discordMessage, args) {
+	/**
+	 * Ban a user
+	 * @param {Object} discordMessage - Discord message object
+	 * @param {Array} args - Command arguments
+	 * @param {Object} client - Discord client
+	 */
+	ban(discordMessage, args, client) {
 		const target = utils.trimUserID(args[0]);
 
 		utils
@@ -57,12 +75,17 @@ module.exports = {
 					color: '#ed1515',
 				};
 
-				utils.modAction(discordMessage, msgObj);
+				utils.modAction(discordMessage, msgObj, client);
 			})
 			.catch((error) => console.error(error));
 	},
 
-	// Unban a user
+	/**
+	 * Unban a user
+	 * @param {Object} discordMessage - Discord message object
+	 * @param {Array} args - Command arguments
+	 * @param {Object} client - Discord client
+	 */
 	unban(discordMessage, args, client) {
 		const target = utils.trimUserID(args[0]);
 
@@ -85,7 +108,10 @@ module.exports = {
 			.catch((error) => console.error(error));
 	},
 
-	// DM a user a list of banned words
+	/**
+	 * DM a user the list of banned words
+	 * @param {Object} discordMessage - Discord message object
+	 */
 	bannedwords(discordMessage) {
 		const data = [`Here's a list of all the banned words:`];
 
@@ -113,6 +139,10 @@ module.exports = {
 			});
 	},
 
+	/**
+	 * Evaluate string as javascript. WARNING: VERY DANGEROUS
+	 * @param {Object} discordMessage - Discord message object
+	 */
 	eval(discordMessage, args) {
 		if (discordMessage.author.id !== userIDs.ownerID)
 			return discordMessage.reply(

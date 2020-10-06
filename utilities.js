@@ -1,6 +1,11 @@
+const Discord = require('discord.js');
 const { logChannel } = require('./config.json');
 
 module.exports = {
+	/**
+	 * Replace certain characters with that character plus a zero-width space
+	 * @param {*} text - Text to clean up
+	 */
 	clean(text) {
 		if (typeof text === 'string')
 			return text
@@ -9,6 +14,11 @@ module.exports = {
 		else return text;
 	},
 
+	/**
+	 * Find a channel by its ID
+	 * @param {Object} discordMessage - Discord message object
+	 * @param {string} channelID - ID of the channel you want
+	 */
 	findChannel(discordMessage, channelID) {
 		return discordMessage.guild.channels.cache.find(
 			(channel) => channel.id === channelID
@@ -16,7 +26,7 @@ module.exports = {
 	},
 
 	/**
-	 * Get a list of attachments.
+	 * Get a message's attachments.
 	 * @param {Object} discordMessage - Discord message object
 	 */
 	getAttachments(discordMessage) {
@@ -37,7 +47,7 @@ module.exports = {
 
 	/**
 	 * Log a message.
-	 * @param {Object} discordMessage - A Discord message
+	 * @param {Object} discordMessage - Discord message object
 	 * @param {string} type - Type of message
 	 * @param {string} extra - Optional extra text to be appended to the message
 	 */
@@ -59,12 +69,13 @@ url = "https://discord.com/channels/${discordMessage.guild.id}/${discordMessage.
 	},
 
 	/**
-	 * Create an embed message for moderator actions.
-	 * @param {string} action - Name of the moderator action
-	 * @param {Object} author - Moderator performing the action
-	 * @param {string} type - Type of action (`Moderator` or `Automatic`)
-	 * @param {Object} target - Target of the action
-	 * @param {string} color - Color of the embed bar
+	 * Create an embed message for moderator actions
+	 * @param {string} action - Name of the action being taken
+	 * @param {Object} author - Object containing the author's information
+	 * @param {boolean} isAutomatic - Whether or not the action was automatically performed
+	 * @param {Object} target - Object containing the target's information
+	 * @param {string} reason - Why the action was taken
+	 * @param {string} color - Color of the embed's border
 	 */
 	modEmbed(action, author, type, target, reason, color) {
 		return new Discord.MessageEmbed()
@@ -80,15 +91,10 @@ url = "https://discord.com/channels/${discordMessage.guild.id}/${discordMessage.
 	},
 
 	/**
-	 * Perform a moderator action.
-	 * @param {Object} discordMessage - A Discord message
-	 * @param {Object} action - An object containing the values required to send the message
-	 * @param {array} action.args - Reason the action has been taken
-	 * @param {string} action.type - Type of action (`Moderator` or `Automatic`)
-	 * @param {string} action.name - Name of the action being performed
-	 * @param {string} action.perm - Permission required to send the action
-	 * @param {string} action.target - Target of the action
-	 * @param {string} action.color - Color of the embed
+	 * Perform a moderator action
+	 * @param {Object} discordMessage - Discord message object
+	 * @param {Object} action - Object containing action information
+	 * @param {Object} Client - Discord client object
 	 */
 	modAction(discordMessage, action, Client) {
 		// Don't let unprivileged users run perform mod actions
@@ -159,14 +165,18 @@ url = "https://discord.com/channels/${discordMessage.guild.id}/${discordMessage.
 			});
 	},
 
-	// Check if a user is banned
-	async checkIfBanned(discordMessage, user) {
-		// Get the list of banned users
+	/**
+	 * Check if a user is banned
+	 * @param {Object} discordMessage - Discord message object
+	 * @param {*} userID - ID of the user
+	 * @returns {boolean}
+	 */
+	async checkIfBanned(discordMessage, userID) {
 		let banList, isBanned;
 
 		try {
 			banList = await discordMessage.guild.fetchBans();
-			isBanned = banList.find((list) => list.user.id === user);
+			isBanned = banList.find((list) => list.user.id === userID);
 		} catch (error) {
 			console.error(error);
 		}
@@ -174,16 +184,19 @@ url = "https://discord.com/channels/${discordMessage.guild.id}/${discordMessage.
 		if (isBanned) isBanned = true;
 		else isBanned = false;
 
-		console.log('from checkIfBanned():', isBanned);
+		console.log('from checkIfBanned():', isBanned, userID);
 
 		return isBanned;
 	},
 
-	// Trim the ping text off of user ids
+	/**
+	 * Trim off the text that marks a user ID as a ping
+	 * @param {string} userID - User ID to trim
+	 */
 	trimUserID(userID) {
 		let id = userID;
 
-		// If the target is a ping we need to chop off the ping text
+		// If the id is a ping trim the ping text off
 		if (id.startsWith('<@!')) {
 			id = userID.substring(3);
 			id = id.substring(0, id.length - 1);
